@@ -4,10 +4,28 @@
 
 int main(){
 
-    //check if config exist if not create file empty
-    //if file exists start parsing
+    FILE *fptr = fopen("dotsync.cfg", "a+");
+    if(fptr != NULL) {
 
-    //skip commented line
+        if(ftell(fptr) == 0) {
+            fprintf(fptr, "# Write here the source and destination of the copy. es: path/to/source/|path/to/destination/");
+            fclose(fptr); //closes the file after the write operation
+            printf("Configuration not found!\n");
+            return 1;
+        }
+        else{
+            rewind(fptr);
+        }
+
+        char buff;
+        fscanf(fptr, "%c", &buff);
+        if(buff = '#'){
+            //skip line
+        }
+        else{
+            //start parsing
+        }
+    }
 
     //if target source exists parse content and save to buffer
     //otherwise skip it and signal missing file/folder
