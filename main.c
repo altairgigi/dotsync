@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <time.h>
 #include <sys/stat.h>
 
 int main(){
+    clock_t time;
     FILE *cfgptr = fopen("dotsync.cfg", "a+");
     if(cfgptr != NULL) {
 
@@ -13,7 +15,7 @@ int main(){
             fprintf(cfgptr, "# Write here the source and destination of the copy. es: path/to/source/|path/to/destination/");
             fclose(cfgptr);
             fprintf(stderr, "Empty configuration file created! Exiting...\n");
-            return 1; //since the file was empty there wer no paths in it
+            return 1;
         }
         else{
             rewind(cfgptr);
@@ -21,6 +23,7 @@ int main(){
         }
 
         //here starts reading the config and skips the commented lines
+        time = clock();
         int count = 0;
         char pathToSrc[256], pathToDst[256];
         while(!feof(cfgptr)){
@@ -86,7 +89,8 @@ int main(){
             count++;
         }
         fclose(cfgptr);
-        fprintf(stderr, "Copy successful!\n");
+        time = clock() - time;
+        fprintf(stderr, "Copy successful in %.3f ms!\n", ((float)time / CLOCKS_PER_SEC) * 1000);
     }
 
     return 0;
