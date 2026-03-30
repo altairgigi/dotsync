@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 
 #define PATH_MAX 4096
+#define BUFFER_SIZE 4096
 
 int main(int argc, char *argv[]){
     bool isForced = false, isQuiet = false;
@@ -98,11 +99,11 @@ int main(int argc, char *argv[]){
                     FILE *dstptr = fopen(pathToDst, "w");
 
                     if(dstptr != NULL){
-                        unsigned char buffer[PATH_MAX];
+                        unsigned char buffer[BUFFER_SIZE];
                         size_t input, output;
 
                         while(!feof(srcptr)){
-                            input = fread(buffer, sizeof(unsigned char), PATH_MAX, srcptr);
+                            input = fread(buffer, sizeof(unsigned char), BUFFER_SIZE, srcptr);
 
                             if(input > 0){
                                 output = fwrite(buffer, sizeof(unsigned char), input, dstptr);
